@@ -22,7 +22,6 @@ def descrStats(data):
     descr = smstats.descriptivestats.describe(data)
     return descr
     
-    
 def loadcsv(filename):
     """
     Load CSV file into list-of-dictionaries format
@@ -36,7 +35,7 @@ def loadcsv(filename):
         keys = []
         for row in reader:
             if keys == []:
-                keys = row
+                keys = [key.strip() for key in row]
             
             else:
                 entry= {}
@@ -65,6 +64,17 @@ def extract_subset(data, keys):
     
     return subSet
     
+def extract_by_value(data, key, value):
+    """
+    For extracting every observation whose specified key has the specified value
+    """
+    subSet = []
+    for obs in data:
+        if obs[key] == value:
+            subSet.append(obs)
+    
+    return subSet
+    
 def sort_by_key(observation, key=""):
     """
     General skeleton function for sorting list of dictionaries by a specific key.
@@ -83,4 +93,25 @@ def test():
     descriptions = descrStats(df)
     print(descriptions)
     
-#test()
+def main():
+    indicator_seven_days = loadcsv("Indicators_of_Anxiety_or_Depression_Based_on_Reported_Frequency_of_Symptoms_During_Last_7_Days.csv")
+    indicator_four_weeks = loadcsv("Indicators_of_Reduced_Access_to_Care_Due_to_the_Coronavirus_Pandemic_During_Last_4_Weeks.csv")
+    state_and_county = loadcsv ("StateAndCountyData.csv")
+    variable_list = loadcsv("VariableList.csv")
+    
+    #get code meanings, swap them in for the state and county observations
+    code_meanings = {}
+    variable_correspondences = extract_subset(variable_list, ["\ufeffVariable_Name", "Variable_Code"])
+    for code in variable_correspondences:
+        variable_code = code["Variable_Code"]
+        variable_name = code["\ufeffVariable_Name"]
+        code_meanings[variable_code] = variable_name
+    
+    #Trim to just data by state
+    indicator_seven_days = extract_by_value(indicator_seven_days, "Group", "By State")
+    indicator_four_weeks = extract_by_value(indicator_four_weeks, "Group", "By State")
+    
+    #populations of counties in 2015
+    county_populations = extract_by_value(state_and_county, 
+    
+main()
