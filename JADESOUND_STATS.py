@@ -25,12 +25,23 @@ def descrStats(data):
 def calc_percents(data, pop_data, variable):
 
     outdata = pd.DataFrame(columns=["State", "Percentage", "Population"])
+    state_df = pop_data[["State","Value"]]
+    state_df['State'].str.strip()
+    state_df.set_index('State', inplace=True)
+    var_df = data[["State", "Variable_Code", "Value"]]
+    var_df = var_df.loc[var_df["Variable_Code"] == variable]
     for state in abr.values():
-        total_pop = pop_data.loc[pop_data["State"] == state].sum()
-        pop_count = data.loc[data["State"] == state].sum()
-        perc_pop = pop_count/total_pop
-        new_line = {"State":state, "Percentage":perc_pop, "Population":perc_pop}
-        outdata.append(new_line)
+        try:
+            total_pop = state_df.loc[[state]].sum()
+            var_count = var_df.loc[data["State"] == state].sum()
+            perc_pop = var_count.Value/total_pop.Value
+            print(perc_pop)
+        except KeyError:
+            total_pop = 0
+            var_count = pd.Series([0,0,0], index=['State',"Variable_Code", "Value"])
+            perc_pop = 0
+        new_line = {"State":state, "Percentage":perc_pop, "Population":var_count.Value}
+        outdata = outdata.append(new_line, ignore_index=True)
     return outdata
 
 def test():
@@ -43,12 +54,17 @@ def test():
     descriptions = descrStats(df)
     print(descriptions)
 
-def main():
+if __name__ == '__main__':
     indicator_seven_days = pd.read_csv("data/Indicators_of_Anxiety_or_Depression_Based_on_Reported_Frequency_of_Symptoms_During_Last_7_Days.csv")
     indicator_four_weeks = pd.read_csv("data/Indicators_of_Reduced_Access_to_Care_Due_to_the_Coronavirus_Pandemic_During_Last_4_Weeks.csv")
     state_and_county = pd.read_csv("data/StateAndCountyData.csv")
+    state_and_county = state_and_county.astype({"FIPS":str,
+                                                "State":str,
+                                                "County":str,
+                                                "Variable_Code":str,
+                                                "Value":float})
     variable_list = pd.read_csv("data/VariableList.csv")
-    county_supplement = pd.read_csv("data/SupplementalDataCounty.csv")
+    county_supplement = pd.read_csv("data/SupplementalDataCounty.csv", skipinitialspace = True)
 
     #Trim to just data by state
     indicator_seven_days = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
@@ -57,6 +73,5 @@ def main():
     pop_data = county_supplement.loc[county_supplement["Variable_Code"] == "Population_Estimate_2015"]
     for county in pop_data["County"]:
         county = county[0:-7]
-
-
-main()
+        
+    low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
