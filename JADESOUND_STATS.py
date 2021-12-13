@@ -22,6 +22,24 @@ def descrStats(data):
     descr = smstats.descriptivestats.describe(data)
     return descr
 
+def pearson(X, y):
+    """
+    Parameters
+    ----------
+    X : Column of DataFrame
+        Variable 1
+    y : Column of DataFrame
+        Variable 2
+
+    Returns
+    -------
+    pearson_p : tuple
+        Value one = Pearson's correlation coefficient
+        Value two = two-tailed p-value
+    """
+    pearson_p = sp.stats.pearsonr(X, y)
+    return pearson_p
+
 def calc_percents(data, pop_data, variable):
 
     outdata = pd.DataFrame(columns=["State", "Percentage", "Population"])
@@ -35,7 +53,6 @@ def calc_percents(data, pop_data, variable):
             total_pop = state_df.loc[[state]].sum()
             var_count = var_df.loc[data["State"] == state].sum()
             perc_pop = var_count.Value/total_pop.Value
-            print(perc_pop)
         except KeyError:
             total_pop = 0
             var_count = pd.Series([0,0,0], index=['State',"Variable_Code", "Value"])
@@ -75,3 +92,5 @@ if __name__ == '__main__':
         county = county[0:-7]
         
     low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
+    low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
+    lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
