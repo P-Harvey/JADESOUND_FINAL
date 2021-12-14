@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import scipy as sp
-import scikits.bootstrap as bootstrap
+#import scikits.bootstrap as bootstrap
 import statsmodels.api as sm
 import statsmodels.stats as smstats
 import os
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     #Trim to just data by state
     indicator_seven_days = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
-    indicator_four_weeks = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
+    indicator_four_weeks = indicator_four_weeks.loc[indicator_four_weeks["Group"] == "By State"]
 
     pop_data = county_supplement.loc[county_supplement["Variable_Code"] == "Population_Estimate_2015"]
     for county in pop_data["County"]:
@@ -94,3 +94,4 @@ if __name__ == '__main__':
     low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
     low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
     lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
+    
