@@ -72,31 +72,55 @@ def test():
     print(descriptions)
     
 def county_pop_percent(state_supplement, county_supplement):
+    '''
+    
+
+    Parameters
+    ----------
+    state_supplement : DataFrame
+        data on state's populations.
+    county_supplement : DataFrame
+        data on county's populations.
+
+    Returns
+    -------
+    pop_percent : dict
+        pyhton dictionary of dictionaries
+        key is states and value is a dictionary where key is county and value is pop% for state.
+
+    '''
     #Trim to just 2018 pop
     state_pop = state_supplement.loc[state_supplement['Variable_Code'] == 'State_Population_2018']
     county_pop = county_supplement.loc[county_supplement['Variable_Code'] == 'Population_Estimate_2018']
     
     pop_percent = {}
     state_dict = {}
-    state = county_pop.iloc[0]['State']
-    for county_index in range(len(county_pop['County'])):
+    
+    state = county_pop.iloc[0]['State'] # first state in data (should be AL)
+    pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value'] # pop for first state
+    '''
+    make a new dictionary for each state
+    then add that dictionary to master dictionary when done w each state
+    '''
+    for county_index in range(len(county_pop['County'])): # iterating over every county
         if state == county_pop.iloc[county_index]['State']:
+            
             # same state as previous
             county = county_pop.iloc[county_index]['County']
-            pop = county_pop.iloc[county_index]['Value']
-            pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value']
-            state_dict[county] = pop/pop_state
+            pop_county = county_pop.iloc[county_index]['Value']
+            state_dict[county] = pop_county/pop_state
             
         else:
+            
             # next state
-            pop_percent[state] = state_dict
-            state_dict = {}
+            pop_percent[state] = state_dict # add prevoius state to master dict
+            state_dict = {} # clear previous states dictionary
+            
             state = county_pop.iloc[county_index]['State']
-            county = county_pop.iloc[county_index]['County']
-            pop = county_pop.iloc[county_index]['Value']
             pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value']
-            #print(pop_state)
-            state_dict[county] = pop/pop_state
+            county = county_pop.iloc[county_index]['County']
+            pop_county = county_pop.iloc[county_index]['Value']
+            state_dict[county] = pop_county/pop_state
         
     return pop_percent
                 
