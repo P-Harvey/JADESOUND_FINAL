@@ -70,6 +70,38 @@ def test():
     summStat(fit)
     descriptions = descrStats(df)
     print(descriptions)
+    
+def county_pop_percent(state_supplement, county_supplement):
+    #Trim to just 2018 pop
+    state_pop = state_supplement.loc[state_supplement['Variable_Code'] == 'State_Population_2018']
+    county_pop = county_supplement.loc[county_supplement['Variable_Code'] == 'Population_Estimate_2018']
+    
+    pop_percent = {}
+    state_dict = {}
+    state = county_pop.iloc[0]['State']
+    for county_index in range(len(county_pop['County'])):
+        if state == county_pop.iloc[county_index]['State']:
+            # same state as previous
+            county = county_pop.iloc[county_index]['County']
+            pop = county_pop.iloc[county_index]['Value']
+            pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value']
+            state_dict[county] = pop/pop_state
+            
+        else:
+            # next state
+            pop_percent[state] = state_dict
+            state_dict = {}
+            state = county_pop.iloc[county_index]['State']
+            county = county_pop.iloc[county_index]['County']
+            pop = county_pop.iloc[county_index]['Value']
+            pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value']
+            #print(pop_state)
+            state_dict[county] = pop/pop_state
+        
+    return pop_percent
+                
+        
+    
 
 if __name__ == '__main__':
     indicator_seven_days = pd.read_csv("data/Indicators_of_Anxiety_or_Depression_Based_on_Reported_Frequency_of_Symptoms_During_Last_7_Days.csv")
@@ -82,6 +114,9 @@ if __name__ == '__main__':
                                                 "Value":float})
     variable_list = pd.read_csv("data/VariableList.csv")
     county_supplement = pd.read_csv("data/SupplementalDataCounty.csv", skipinitialspace = True)
+    state_supplement = pd.read_csv("data/SupplementalDataState.csv", skipinitialspace = True)
+
+    pop_percent = county_pop_percent(state_supplement, county_supplement)
 
     #Trim to just data by state
     indicator_seven_days = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
@@ -95,3 +130,9 @@ if __name__ == '__main__':
     low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
     lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
     
+    i7_anxiety = indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder']
+    i4_delayed = indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks']
+    
+    #anxiety_delayed_care_pearson = pearson(indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder'],
+        #                                  indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks'])
+    #print(anxiety_delayed_care_pearson)
