@@ -1,0 +1,37 @@
+Ideas and Notes
+
+Journal Entry:
+November 30, 2021
+Met as group to pick reserach proposal.  everyine presented their pitch on why the group should pursue their project.
+We eventually deciced on Patrick Harvey's reseach proposal.
+
+Journal Entry:
+December 02, 2021
+Team proposal was accepted.  Preliminary gantt chart was supposed to be included in our proposal.  The group will have to meet to develope one.
+
+Journal Entry:
+December 06, 2021
+Team met to create preliminary gant chart and cleaned up a few data sets.  To make the project easier some data sets will have to be trimed or removed.
+skeleton code JADESOUND_STATS.py was uploaded to github.  this script will be developed further once data sets are cleaned and trimed.
+
+Journal Entry:
+December 08, 2021
+A subgroup worked on cleaning more data sets, so the stats team could start working on statistcal analysis.  
+The cleaning data set group created a sccript to load the data and sort it.  
+There was some confusion between team team mates on this was supposed to be accomplished.
+
+Journal Entry:
+December 12, 2021
+Team met in person and virtually to clarify any project questions, finish scripts to evaluate data, and trim a few data sets.
+Python file "state_abr.py" was pushed to github.  The file is a dictionary of state abbreviations.
+
+Issues encounter:
+1. There was an issue with state abbreviations in a few data sets.  Issue was resolved by creating a dictionary to normalize all state names.
+2. To many data sets to work with.  Issue was resolved by removing a few to help simplify the project.
+3. Which variables should the team foucs on to asnwer research question.  Issue was resolved by discussin and evaluating our goals and interest.
+We ultimatly deciced on what variabels we wanted to focus on.
+
+Journal Entry:
+December 13, 2021
+state_abr.py was and JADESOUND_STATS.py were updated.
+readme.txt was publised to github.
