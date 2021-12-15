@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 import scipy as sp
+import pickle
+
 import scikits.bootstrap as bootstrap
 #if things start breaking with no warning comment out these two lines
 import warnings
@@ -148,6 +150,8 @@ if __name__ == '__main__':
 #    low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
 #    lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
 
+# Scripts to check and load each data analysis.
+# If anyone can figure out how to compress these into a single function please do so.
     if not "poverty_15.p" in os.listdir("stats/"):
         poverty_15_processed = calc_county_percents(state_and_county, pop_data, "POVRATE15")
         f = open("stats/poverty_15.p", 'wb')
