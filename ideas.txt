@@ -39,3 +39,4 @@ readme.txt was publised to github.
 * Journal Entry:
 December 15, 2021
 Finished up code, and report.  Puerto Rico was removed from the state abrivitaion script, since it was not used.
+Added p-values to our stats script.
