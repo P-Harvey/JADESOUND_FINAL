@@ -94,11 +94,15 @@ def scatter_plot(x, y, x_axis, y_axis, title):
     x = x.sort_values(by="State")
     y = y.sort_values(by="State")
     
-    results = leastSquares(x["Percentage"], y["Percentage"])
-    
-    plt.plot(x['Percentage'], x['Percentage']*results.params[1] + results.params[0])
-    
     plt.scatter(x["Percentage"], y["Percentage"])
+    
+    results = leastSquares(x["Percentage"], y["Percentage"])
+    print(title)
+    print(results.summary())
+    plt.plot(x['Percentage'], x['Percentage']*results.params[1] + results.params[0])
+
+    text = 'p-value=' + str(round(results.pvalues[1],5))
+    plt.text(x["Percentage"].max()-4, y['Percentage'].min(), text)
     
     plt.xlabel(x_axis)
     plt.ylabel(y_axis)
