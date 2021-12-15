@@ -11,7 +11,7 @@
 * [Report](#report)
 * [Reflection](#reflection)
 * [Evaluations](#evaluation)
-* [Notes](#notes)
+* [Ideas](#ideas)
 
 ### General Info and Motivation
 The overview and motivation for this project and the subsequent questions is to focus on potential risk factors that are correlated with mental health issues. 
@@ -67,6 +67,6 @@ This is our groups written reflection on how the final project went.
 Evaluations are conducted indivuadully by group mebers to report the efforts made by individuals and the group.
 There are three evalutions for this project.  A self, peer, and team process evaluation.
 
-### Notes
+### Ideas
 Flie describing our reseach process and ideas that we tried through out the project.
 
