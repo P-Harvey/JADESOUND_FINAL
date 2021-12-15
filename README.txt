@@ -36,6 +36,8 @@ This dataset has more than 280 variables describing the “food environment” w
 
 ### Code
 Code files used to complete this project:
+* JADESOUND_STATS.py
+* stat_abr.py
 
 ### Minutes
 A directory of all team minutes for this project.  Team minutes are documantation of team meetings and what was accomplished druing that meeting.
