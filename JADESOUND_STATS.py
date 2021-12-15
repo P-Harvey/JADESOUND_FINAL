@@ -16,6 +16,8 @@ import os
 import csv
 from state_abr import abr
 
+import matplotlib.pyplot as plt
+
 def leastSquares(X, y):
     olsFit = sm.regression.linear_model.OLS(y, X).fit()
     return olsFit
@@ -87,6 +89,17 @@ def process_indicator_data(data):
         new_line = {"State":state_abr, "Percentage":percent, "Confidence Interval":ci}
         outdata = outdata.append(new_line, ignore_index=True)
     return outdata
+
+def scatter_plot(x, y, x_axis, y_axis, title):
+    
+    x = x.sort_values(by="State")
+    y = y.sort_values(by="State")
+    
+    plt.scatter(x["Percentage"], y["Percentage"])
+    plt.xlabel(x_axis)
+    plt.ylabel(y_axis)
+    plt.title(title)
+    plt.show()
 
 def test():
     d = [1,2,3,4,5,6,7,8,9,10]
@@ -201,7 +214,22 @@ if __name__ == '__main__':
         f = open("stats/i4_denied.p", 'rb')
         i4_denied_processed = pickle.load(f)
         f.close()
+        
+    #scatter_plot(i7_anxiety_processed, i7_depression_processed, "Anxiety Rates (%)", "Depression Rates (%)", "Anxiety and Depression Rates In 50 States\n(4/23/20-10/11/21)")
     
-    #anxiety_delayed_care_pearson = pearson(indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder'],
-        #                                  indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks'])
-    #print(anxiety_delayed_care_pearson)
+    #scatter_plot(i7_anxiety_processed, i4_delayed_processed, "Anxiety Rates (%)", "Medical Cases With Delayed Care (%)", "Anxiety and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+    
+    #scatter_plot(i7_anxiety_processed, i4_denied_processed, "Anxiety Rates (%)", "Medical Cases With No Care (%)", "Anxiety and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+    
+    #scatter_plot(i7_depression_processed, i4_delayed_processed, "Depression Rates (%)", "Medical Cases With Delayed Care (%)", "Depression and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+    
+    #scatter_plot(i7_depression_processed, i4_denied_processed, "Depression Rates (%)", "Medical Cases With No Care (%)", "Depression and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+    
+    #scatter_plot(poverty_15_processed, i4_delayed_processed, "2015 Poverty Rates (%)", "Medical Cases With Delayed Care (%)", "Poverty and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+
+    #scatter_plot(poverty_15_processed, i4_denied_processed, "2015 Poverty Rates (%)", "Medical Cases With No Care (%)", "Poverty and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+
+    #scatter_plot(poverty_15_processed, i7_anxiety_processed, "2015 Poverty Rates (%)", "Anxiety Rates (%)", "Poverty and Anxiety in 50 States\n(4/23/20-10/11/21)")
+
+    #scatter_plot(poverty_15_processed, i7_depression_processed, "2015 Poverty Rates (%)", "Depression Rates (%)", "Poverty and Depression in 50 States\n(4/23/20-10/11/21)")
+
