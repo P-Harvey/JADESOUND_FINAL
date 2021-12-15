@@ -43,21 +43,24 @@ def pearson(X, y):
 def calc_percents(data, pop_data, variable):
 
     outdata = pd.DataFrame(columns=["State", "Percentage", "Population"])
-    state_df = pop_data[["State","Value"]]
+    state_df = pop_data[["State","County","Value"]]
     state_df['State'].str.strip()
-    state_df.set_index('State', inplace=True)
-    var_df = data[["State", "Variable_Code", "Value"]]
-    var_df = var_df.loc[var_df["Variable_Code"] == variable]
+    var_df = data.loc[data["Variable_Code"] == variable][["State", "County", "Variable_Code", "Value"]]
     for state in abr.values():
         try:
-            total_pop = state_df.loc[[state]].sum()
-            var_count = var_df.loc[data["State"] == state].sum()
-            perc_pop = var_count.Value/total_pop.Value
+            var_counts = var_df.loc[var_df["State"] == state]
+            pop_counts = state_df.loc[state_df["State"] == state][["County", "Value"]]
+            merged = pd.merge(var_counts, pop_counts, on="County")
+            merged["Normalized"] = merged["Value_x"] * merged["Value_y"]
+            normalized_total = merged["Normalized"].sum()
+            total_pop = pop_counts["Value"].sum()
+            perc_pop = normalized_total/total_pop
+            
         except KeyError:
             total_pop = 0
             var_count = pd.Series([0,0,0], index=['State',"Variable_Code", "Value"])
             perc_pop = 0
-        new_line = {"State":state, "Percentage":perc_pop, "Population":var_count.Value}
+        new_line = {"State":state, "Percentage":perc_pop, "Population":total_pop}
         outdata = outdata.append(new_line, ignore_index=True)
     return outdata
 
@@ -147,15 +150,38 @@ if __name__ == '__main__':
     indicator_four_weeks = indicator_four_weeks.loc[indicator_four_weeks["Group"] == "By State"]
 
     pop_data = county_supplement.loc[county_supplement["Variable_Code"] == "Population_Estimate_2015"]
-    for county in pop_data["County"]:
-        county = county[0:-7]
+    for i, county in pop_data["County"].iteritems():
+        if county.endswith(" County"):
+            pop_data.at[i, "County"] = county[:-7]
+            
+        elif county.endswith(" City and Borough"):
+            pop_data.at[i, "County"] = county[:-17]
+            
+        elif county.lower().endswith(" city"):
+            pop_data.at[i, "County"] = county[:-5]
+            
+        elif county.endswith(" Borough"):
+            pop_data.at[i, "County"] = county[:-8]
+            
+        elif county.endswith(" Census Area"):
+            pop_data.at[i, "County"] = county[:-12]
+            
+        elif county.endswith(" Municipality"):
+            pop_data.at[i, "County"] = county[:-13]
+            
+        elif county.endswith(" Parish"):
+            pop_data.at[i, "County"] = county[:-7]
         
-    low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
-    low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
-    lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
+#    low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
+#    low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
+#    lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
+
+    poverty_15 = calc_percents(state_and_county, pop_data, "POVRATE15")
     
     i7_anxiety = indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder']
     i4_delayed = indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks']
+    
+    
     
     #anxiety_delayed_care_pearson = pearson(indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder'],
         #                                  indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks'])
