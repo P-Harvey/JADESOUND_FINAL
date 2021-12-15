@@ -3,7 +3,11 @@
 import numpy as np
 import pandas as pd
 import scipy as sp
-#import scikits.bootstrap as bootstrap
+import scikits.bootstrap as bootstrap
+#if things start breaking with no warning comment out these two lines
+import warnings
+warnings.filterwarnings('ignore')
+
 import statsmodels.api as sm
 import statsmodels.stats as smstats
 import os
@@ -40,9 +44,9 @@ def pearson(X, y):
     pearson_p = sp.stats.pearsonr(X, y)
     return pearson_p
 
-def calc_percents(data, pop_data, variable):
+def calc_county_percents(data, pop_data, variable):
 
-    outdata = pd.DataFrame(columns=["State", "Percentage", "Population"])
+    outdata = pd.DataFrame(columns=["State", "Percentage", "Confidence Interval", "Population"])
     state_df = pop_data[["State","County","Value"]]
     state_df['State'].str.strip()
     var_df = data.loc[data["Variable_Code"] == variable][["State", "County", "Variable_Code", "Value"]]
@@ -55,12 +59,30 @@ def calc_percents(data, pop_data, variable):
             normalized_total = merged["Normalized"].sum()
             total_pop = pop_counts["Value"].sum()
             perc_pop = normalized_total/total_pop
+            ci = bootstrap.ci(var_counts["Value"])
             
         except KeyError:
             total_pop = 0
-            var_count = pd.Series([0,0,0], index=['State',"Variable_Code", "Value"])
+            ci = [0, 0]
             perc_pop = 0
-        new_line = {"State":state, "Percentage":perc_pop, "Population":total_pop}
+        new_line = {"State":state, "Percentage":perc_pop, "Confidence Interval":ci, "Population":total_pop}
+        outdata = outdata.append(new_line, ignore_index=True)
+    return outdata
+
+def process_indicator_data(data):
+    
+    outdata = pd.DataFrame(columns=["State", "Percentage", "Confidence Interval"])
+    for state in abr.keys():
+        state_abr = abr[state]
+        try:
+            state_data = data.loc[data["State"] == state]
+            percent = state_data["Value"].sum()/len(state_data["Value"])
+            ci = bootstrap.ci(state_data["Value"])
+            
+        except:
+            percent = 0
+            ci = [0,0]
+        new_line = {"State":state_abr, "Percentage":percent, "Confidence Interval":ci}
         outdata = outdata.append(new_line, ignore_index=True)
     return outdata
 
@@ -73,61 +95,6 @@ def test():
     summStat(fit)
     descriptions = descrStats(df)
     print(descriptions)
-    
-def county_pop_percent(state_supplement, county_supplement):
-    '''
-    
-
-    Parameters
-    ----------
-    state_supplement : DataFrame
-        data on state's populations.
-    county_supplement : DataFrame
-        data on county's populations.
-
-    Returns
-    -------
-    pop_percent : dict
-        pyhton dictionary of dictionaries
-        key is states and value is a dictionary where key is county and value is pop% for state.
-
-    '''
-    #Trim to just 2018 pop
-    state_pop = state_supplement.loc[state_supplement['Variable_Code'] == 'State_Population_2018']
-    county_pop = county_supplement.loc[county_supplement['Variable_Code'] == 'Population_Estimate_2018']
-    
-    pop_percent = {}
-    state_dict = {}
-    
-    state = county_pop.iloc[0]['State'] # first state in data (should be AL)
-    pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value'] # pop for first state
-    '''
-    make a new dictionary for each state
-    then add that dictionary to master dictionary when done w each state
-    '''
-    for county_index in range(len(county_pop['County'])): # iterating over every county
-        if state == county_pop.iloc[county_index]['State']:
-            
-            # same state as previous
-            county = county_pop.iloc[county_index]['County']
-            pop_county = county_pop.iloc[county_index]['Value']
-            state_dict[county] = pop_county/pop_state
-            
-        else:
-            
-            # next state
-            pop_percent[state] = state_dict # add prevoius state to master dict
-            state_dict = {} # clear previous states dictionary
-            
-            state = county_pop.iloc[county_index]['State']
-            pop_state = state_pop[state_pop['State'] == state].iloc[0]['Value']
-            county = county_pop.iloc[county_index]['County']
-            pop_county = county_pop.iloc[county_index]['Value']
-            state_dict[county] = pop_county/pop_state
-        
-    return pop_percent
-                
-        
     
 
 if __name__ == '__main__':
@@ -143,13 +110,12 @@ if __name__ == '__main__':
     county_supplement = pd.read_csv("data/SupplementalDataCounty.csv", skipinitialspace = True)
     state_supplement = pd.read_csv("data/SupplementalDataState.csv", skipinitialspace = True)
 
-    pop_percent = county_pop_percent(state_supplement, county_supplement)
-
     #Trim to just data by state
     indicator_seven_days = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
     indicator_four_weeks = indicator_four_weeks.loc[indicator_four_weeks["Group"] == "By State"]
 
     pop_data = county_supplement.loc[county_supplement["Variable_Code"] == "Population_Estimate_2015"]
+    
     for i, county in pop_data["County"].iteritems():
         if county.endswith(" County"):
             pop_data.at[i, "County"] = county[:-7]
@@ -171,17 +137,66 @@ if __name__ == '__main__':
             
         elif county.endswith(" Parish"):
             pop_data.at[i, "County"] = county[:-7]
+            
+    i7_anxiety = indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder'][['State', 'Value', 'Confidence Interval']]
+    i7_depression = indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Depressive Disorder'][['State', 'Value', 'Confidence Interval']]
+    
+    i4_delayed = indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks'][['State', 'Value', 'Confidence Interval']]
+    i4_denied = indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Did Not Get Needed Care, Last 4 Weeks'][['State', 'Value', 'Confidence Interval']]
         
 #    low_access_10 = calc_percents(state_and_county, pop_data, "LACCESS_POP10")
 #    low_access_15 = calc_percents(state_and_county, pop_data, "LACCESS_POP15")
 #    lacc10_15_pearson = pearson(low_access_10["Percentage"], low_access_15["Percentage"])
 
-    poverty_15 = calc_percents(state_and_county, pop_data, "POVRATE15")
+    if not "poverty_15.p" in os.listdir("stats/"):
+        poverty_15_processed = calc_county_percents(state_and_county, pop_data, "POVRATE15")
+        f = open("stats/poverty_15.p", 'wb')
+        pickle.dump(poverty_15_processed, f)
+        f.close()
+    else:
+        f = open("stats/poverty_15.p", 'rb')
+        poverty_15_processed = pickle.load(f)
+        f.close()
     
-    i7_anxiety = indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder']
-    i4_delayed = indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks']
+    if not "i7_anxiety.p" in os.listdir("stats/"):
+        i7_anxiety_processed = process_indicator_data(i7_anxiety)
+        f = open("stats/i7_anxiety.p", 'wb')
+        pickle.dump(i7_anxiety_processed, f)
+        f.close()
+    else:
+        f = open("stats/i7_anxiety.p", 'rb')
+        i7_anxiety_processed = pickle.load(f)
+        f.close()
+        
+    if not "i7_depression.p" in os.listdir("stats/"):
+        i7_depression_processed = process_indicator_data(i7_depression)
+        f = open("stats/i7_depression.p", 'wb')
+        pickle.dump(i7_depression_processed, f)
+        f.close()
+    else:
+        f = open("stats/i7_depression.p", 'rb')
+        i7_depression_processed = pickle.load(f)
+        f.close()
     
+    if not "i4_delayed.p" in os.listdir("stats/"):
+        i4_delayed_processed = process_indicator_data(i4_delayed)
+        f = open("stats/i4_delayed.p", 'wb')
+        pickle.dump(i4_delayed_processed, f)
+        f.close()
+    else:
+        f = open("stats/i4_delayed.p", 'rb')
+        i4_delayed_processed = pickle.load(f)
+        f.close()
     
+    if not "i4_denied.p" in os.listdir("stats/"):
+        i4_denied_processed = process_indicator_data(i4_denied)
+        f = open("stats/i4_denied.p", 'wb')
+        pickle.dump(i4_denied_processed, f)
+        f.close()
+    else:
+        f = open("stats/i4_denied.p", 'rb')
+        i4_denied_processed = pickle.load(f)
+        f.close()
     
     #anxiety_delayed_care_pearson = pearson(indicator_seven_days.loc[indicator_seven_days['Indicator'] == 'Symptoms of Anxiety Disorder'],
         #                                  indicator_four_weeks.loc[indicator_four_weeks['Indicator'] == 'Delayed Medical Care, Last 4 Weeks'])
