@@ -223,21 +223,29 @@ if __name__ == '__main__':
         i4_denied_processed = pickle.load(f)
         f.close()
         
-    scatter_plot(i7_anxiety_processed, i7_depression_processed, "Anxiety Rates (%)", "Depression Rates (%)", "Anxiety and Depression Rates In 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(i7_anxiety_processed, i7_depression_processed, "Anxiety Rates (%)", "Depression Rates (%)", "Anxiety and Depression Rates In 50 States\n(4/23/20-10/11/21)")
     
-    scatter_plot(i4_delayed_processed, i7_anxiety_processed, "Medical Cases With Delayed Care (%)", "Anxiety Rates (%)", "Anxiety and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(i4_delayed_processed, i7_anxiety_processed, "Medical Cases With Delayed Care (%)", "Anxiety Rates (%)", "Anxiety and Delayed Care in 50 States\n(4/23/20-10/11/21)")
     
-    scatter_plot(i4_denied_processed, i7_anxiety_processed, "Medical Cases With No Care (%)", "Anxiety Rates (%)", "Anxiety and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(i4_denied_processed, i7_anxiety_processed, "Medical Cases With No Care (%)", "Anxiety Rates (%)", "Anxiety and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
     
-    scatter_plot( i4_delayed_processed ,i7_depression_processed, "Medical Cases With Delayed Care (%)", "Depression Rates (%)", "Depression and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot( i4_delayed_processed ,i7_depression_processed, "Medical Cases With Delayed Care (%)", "Depression Rates (%)", "Depression and Delayed Care in 50 States\n(4/23/20-10/11/21)")
     
-    scatter_plot(i4_denied_processed, i7_depression_processed, "Medical Cases With No Care (%)", "Depression Rates (%)", "Depression and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(i4_denied_processed, i7_depression_processed, "Medical Cases With No Care (%)", "Depression Rates (%)", "Depression and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
     
-    scatter_plot(poverty_15_processed, i4_delayed_processed, "2015 Poverty Rates (%)", "Medical Cases With Delayed Care (%)", "Poverty and Delayed Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(poverty_15_processed, i4_delayed_processed, "2015 Poverty Rates (%)", "Medical Cases With Delayed Care (%)", "Poverty and Delayed Care in 50 States\n(4/23/20-10/11/21)")
 
-    scatter_plot(poverty_15_processed, i4_denied_processed, "2015 Poverty Rates (%)", "Medical Cases With No Care (%)", "Poverty and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(poverty_15_processed, i4_denied_processed, "2015 Poverty Rates (%)", "Medical Cases With No Care (%)", "Poverty and Failure to Provide Medical Care in 50 States\n(4/23/20-10/11/21)")
 
-    scatter_plot(poverty_15_processed, i7_anxiety_processed, "2015 Poverty Rates (%)", "Anxiety Rates (%)", "Poverty and Anxiety in 50 States\n(4/23/20-10/11/21)")
+    #scatter_plot(poverty_15_processed, i7_anxiety_processed, "2015 Poverty Rates (%)", "Anxiety Rates (%)", "Poverty and Anxiety in 50 States\n(4/23/20-10/11/21)")
 
-    scatter_plot(poverty_15_processed, i7_depression_processed, "2015 Poverty Rates (%)", "Depression Rates (%)", "Poverty and Depression in 50 States\n(4/23/20-10/11/21)")
-
+    #scatter_plot(poverty_15_processed, i7_depression_processed, "2015 Poverty Rates (%)", "Depression Rates (%)", "Poverty and Depression in 50 States\n(4/23/20-10/11/21)")
+    
+    #print(pearson(poverty_15_processed['Percentage'], i4_delayed_processed['Percentage']))
+    
+    print(poverty_15_processed['Percentage'])
+    
+    
+    
+    
+    
