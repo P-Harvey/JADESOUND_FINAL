@@ -241,44 +241,61 @@ if __name__ == '__main__':
 
     #scatter_plot(poverty_15_processed, i7_depression_processed, "2015 Poverty Rates (%)", "Depression Rates (%)", "Poverty and Depression in 50 States\n(4/23/20-10/11/21)")
     
-    print("anxiety and depression")
-    print(pearson(i7_anxiety_processed['Percentage'], i7_depression_processed['Percentage'])[0])
-    print()
+    # print("anxiety and depression")
+    # print(pearson(i7_anxiety_processed['Percentage'], i7_depression_processed['Percentage'])[0])
+    # print()
     
-    print("anxiety and delayed")
-    print(pearson(i7_anxiety_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
-    print()
+    # print("anxiety and delayed")
+    # print(pearson(i7_anxiety_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
+    # print()
     
-    print("anxiety and denied")
-    print(pearson(i7_anxiety_processed['Percentage'], i4_denied_processed['Percentage'])[0])
-    print()
+    # print("anxiety and denied")
+    # print(pearson(i7_anxiety_processed['Percentage'], i4_denied_processed['Percentage'])[0])
+    # print()
     
-    print("delayed and depression")
-    print(pearson(i7_depression_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
-    print()
+    # print("delayed and depression")
+    # print(pearson(i7_depression_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
+    # print()
     
-    print("denied and depression")
-    print(pearson(i4_denied_processed['Percentage'], i7_depression_processed['Percentage'])[0])
-    print()
+    # print("denied and depression")
+    # print(pearson(i4_denied_processed['Percentage'], i7_depression_processed['Percentage'])[0])
+    # print()
     
-    print("poverty and delayed")
-    print(pearson(poverty_15_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
-    print()
+    # print("poverty and delayed")
+    # print(pearson(poverty_15_processed['Percentage'], i4_delayed_processed['Percentage'])[0])
+    # print()
     
-    print("poverty and denied")
-    print(pearson(poverty_15_processed['Percentage'], i4_denied_processed['Percentage'])[0])
-    print()
+    # print("poverty and denied")
+    # print(pearson(poverty_15_processed['Percentage'], i4_denied_processed['Percentage'])[0])
+    # print()
     
-    print("anxiety and poverty")
-    print(pearson(i7_anxiety_processed['Percentage'], poverty_15_processed['Percentage'])[0])
-    print()
+    # print("anxiety and poverty")
+    # print(pearson(i7_anxiety_processed['Percentage'], poverty_15_processed['Percentage'])[0])
+    # print()
     
-    print("poverty and depression")
-    print(pearson(poverty_15_processed['Percentage'], i7_depression_processed['Percentage'])[0])
+    # print("poverty and depression")
+    # print(pearson(poverty_15_processed['Percentage'], i7_depression_processed['Percentage'])[0])
     
+ 
+    #print(i7_anxiety_processed['Percentage'].sort_values())
+    print("highest anxiety : ", i7_anxiety_processed.loc[18]['State']) # LA
+    print("lowest anxiety : ", i7_anxiety_processed.loc[41]['State']) # SD
     
+    #print(i7_depression_processed['Percentage'].sort_values())
+    print("highest depression : ", i7_depression_processed.loc[18]['State']) # LA
+    print("lowest depression : ", i7_depression_processed.loc[23]['State']) # MN
     
+    #print(i4_delayed_processed['Percentage'].sort_values())
+    print("highest delayed : ", i4_delayed_processed.loc[32]['State']) # NM
+    print("lowest delayed : ", i4_delayed_processed.loc[28]['State']) # ND
     
+    #print(i4_denied_processed['Percentage'].sort_values())
+    print("highest denied : ", i4_denied_processed.loc[32]['State']) # NM
+    print("lowest denied : ", i4_denied_processed.loc[28]['State']) # ND
+    
+    #print(poverty_15_processed['Percentage'].sort_values())
+    print("highest poverty : ", poverty_15_processed.loc[25]['State']) # MS
+    print("lowest poverty : ", poverty_15_processed.loc[30]['State']) # NH
     
     
     
