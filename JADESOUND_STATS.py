@@ -135,6 +135,7 @@ if __name__ == '__main__':
 
     #Trim to just data by state
     indicator_four_weeks_national = indicator_four_weeks.loc[indicator_four_weeks["Group"] == "National Estimate"]
+    indicator_seven_days_national = indicator_seven_days.loc[indicator_seven_days["Group"] == "National Estimate"]
     indicator_seven_days = indicator_seven_days.loc[indicator_seven_days["Group"] == "By State"]
     indicator_four_weeks = indicator_four_weeks.loc[indicator_four_weeks["Group"] == "By State"]
 
@@ -256,19 +257,30 @@ if __name__ == '__main__':
 
 #    scatter_plot(lowaccess_15_processed, i7_depression_processed, "2015 Low Food Access Rates (%)", "Depression Rates (%)", "Low Food Access and Depression in 50 States\n(4/23/20-10/11/21)")
 
-    delayed_over_time = indicator_four_weeks_national.loc[indicator_four_weeks_national["Indicator"] == "Delayed Medical Care, Last 4 Weeks"]
-    plt.scatter(delayed_over_time["Time Period"], delayed_over_time["Value"]*2)
+#    delayed_over_time = indicator_four_weeks_national.loc[indicator_four_weeks_national["Indicator"] == "Delayed Medical Care, Last 4 Weeks"]
+#    scatter_plot(delayed_over_time["Time Period"], delayed_over_time["Value"]*2, "2-Week Sampling Periods Since 4/23/20", "Rate of Delayed Medical Care", "Rates of Delayed Medical Care 4/23/21-10/11/21")
+#
+#    denied_over_time = indicator_four_weeks_national.loc[indicator_four_weeks_national["Indicator"] == "Did Not Get Needed Care, Last 4 Weeks"]
+#    plt.scatter(denied_over_time["Time Period"], denied_over_time["Value"]*2)
+#    plt.xlabel("2-Week Sampling Periods Since 4/23/20")
+#    plt.ylabel("Rate of Failure to Receive Medical Care")
+#    plt.title("Rates of Failure to Recieve Medical Care 4/23/21-10/11/21")
+#    plt.plot()
+#    plt.show()
+#
+#    depression_over_time = indicator_seven_days_national.loc[indicator_seven_days_national["Indicator"] == "Symptoms of Depressive Disorder"]
+#    plt.scatter(depression_over_time["Time Period"], depression_over_time["Value"]*2)
+#    plt.xlabel("2-Week Sampling Periods Since 4/23/20")
+#    plt.ylabel("Rate of Depression")
+#    plt.title("Rates of Depression 4/23/21-10/11/21")
+#    plt.plot()
+#    plt.show()
+#    
+    anxiety_over_time = indicator_seven_days_national.loc[indicator_seven_days_national["Indicator"] == "Symptoms of Anxiety Disorder"]
+    plt.scatter(anxiety_over_time["Time Period"], anxiety_over_time["Value"]*2)
     plt.xlabel("2-Week Sampling Periods Since 4/23/20")
-    plt.ylabel("Rate of Delayed Medical Care")
-    plt.title("Rates of Delayed Medical Care 4/23/21-10/11/21")
-    plt.plot()
-    plt.show()
-    
-    denied_over_time = indicator_four_weeks_national.loc[indicator_four_weeks_national["Indicator"] == "Delayed Medical Care, Last 4 Weeks"]
-    plt.scatter(denied_over_time["Time Period"], denied_over_time["Value"]*2)
-    plt.xlabel("2-Week Sampling Periods Since 4/23/20")
-    plt.ylabel("Rate of Failure to Access Medical Care")
-    plt.title("Rates of Failure to Access Medical Care 4/23/21-10/11/21")
+    plt.ylabel("Rate of Anxiety")
+    plt.title("Rates of Anxiety 4/23/21-10/11/21")
     plt.plot()
     plt.show()
 
