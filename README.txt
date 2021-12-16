@@ -6,11 +6,12 @@
 * [Code](#code)
 * [Minutes](#minutes)
 * [Gantt Charts](#gantt-charts)
+* [Stats and Figures](#stats-and-figures)
 * [Slides & Presentation Video](#slides-and-presentation)
 * [Report](#report)
 * [Reflection](#reflection)
 * [Evaluations](#evaluation)
-* [Notes](#notes)
+* [Ideas](#ideas)
 
 ### General Info and Motivation
 The overview and motivation for this project and the subsequent questions is to focus on potential risk factors that are correlated with mental health issues. 
@@ -49,6 +50,9 @@ The purpose of the gantt chart is to assing task and keep group members accounta
 The preliminary gantt chart was created at the beginning of this project.
 The final gantt chart was made at the end to accurately reflect on what task were done, who did them, and when they were completed .
 
+### Stats and Figures
+Directory full of our statistical analysis and plots
+
 ### Slides & Presentation Video
 A slide show and a silent four minute presentation video of our slide show were created to communicate our findings.
 The four minute video will be used to present our findings to the class during our final exam period.
@@ -63,6 +67,6 @@ This is our groups written reflection on how the final project went.
 Evaluations are conducted indivuadully by group mebers to report the efforts made by individuals and the group.
 There are three evalutions for this project.  A self, peer, and team process evaluation.
 
-### Notes
+### Ideas
 Flie describing our reseach process and ideas that we tried through out the project.
 
