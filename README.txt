@@ -6,7 +6,7 @@
 * [Code](#code)
 * [Minutes](#minutes)
 * [Gantt Charts](#gantt-charts)
-* [Stats and Figures](#stats-and-figures)
+* [Stats](#stats-and-figures)
 * [Slides & Presentation Video](#slides-and-presentation)
 * [Report](#report)
 * [Reflection](#reflection)
@@ -50,7 +50,7 @@ The purpose of the gantt chart is to assing task and keep group members accounta
 The preliminary gantt chart was created at the beginning of this project.
 The final gantt chart was made at the end to accurately reflect on what task were done, who did them, and when they were completed .
 
-### Stats and Figures
+### Stats
 Directory full of our statistical analysis and plots
 
 ### Slides & Presentation Video
